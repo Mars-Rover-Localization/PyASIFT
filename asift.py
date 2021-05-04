@@ -9,6 +9,8 @@ Threading is used for faster affine sampling. Multicore CPUs with Hyper-threadin
 
 Copyleft Lang Zhou, zhoulang731@tongji.edu.cn
 
+GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
+
 Created April 2021
 
 Last modified May 2021

@@ -5,6 +5,8 @@ Interactive features were removed for maximum performance.
 main() method was reserved for test use, may be deprecated in the future
 
 Copyleft Lang Zhou, zhoulang731@tongji.edu.cn
+
+GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
 """
 
 import numpy as np

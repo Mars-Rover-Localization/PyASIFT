@@ -2,6 +2,8 @@
 This module contains some common routines used by other samples.
 
 Contains too much unrelated methods, needs cleaning
+
+GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
 """
 
 import sys

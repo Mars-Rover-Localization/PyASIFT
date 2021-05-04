@@ -1,5 +1,6 @@
 """
 This module contains some common routines used by other samples.
+
 Contains too much unrelated methods, needs cleaning
 """
 

@@ -1,7 +1,10 @@
 """
 Feature Extraction & Matching Implementation.
+
 Based on OpenCV Python samples at https://github.com/opencv/opencv/blob/master/samples/python/find_obj.py.
-Interactive features were removed for maximum performance.
+
+Interactive features were removed for better performance.
+
 main() method was reserved for test use, may be deprecated in the future
 
 Copyleft Lang Zhou, zhoulang731@tongji.edu.cn

@@ -130,7 +130,7 @@ def main():
 
     try:
         fn1, fn2 = args
-    except:
+    except TypeError:
         fn1 = 'box.png'
         fn2 = 'box_in_scene.png'
 
@@ -147,10 +147,10 @@ def main():
         sys.exit(1)
 
     if detector is None:
-        print('unknown feature:', feature_name)
+        print('Unknown feature:', feature_name)
         sys.exit(1)
 
-    print('using', feature_name)
+    print('Using', feature_name)
 
     kp1, desc1 = detector.detectAndCompute(img1, None)
     kp2, desc2 = detector.detectAndCompute(img2, None)
@@ -167,7 +167,7 @@ def main():
         H, status = None, None
         print(f"{len(p1)} matches found, not enough for homography estimation")
 
-    _vis = draw_match("Result", img1, img2, kp_pairs, status, H)
+    draw_match("Result", img1, img2, kp_pairs, status, H)
 
     cv.waitKey()
 

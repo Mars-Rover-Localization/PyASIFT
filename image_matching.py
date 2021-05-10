@@ -5,8 +5,6 @@ Based on OpenCV Python samples at https://github.com/opencv/opencv/blob/master/s
 
 Interactive features were removed for better performance.
 
-main() method was reserved for test use, may be deprecated in the future
-
 Copyleft Lang Zhou, zhoulang731@tongji.edu.cn
 
 GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
@@ -120,61 +118,3 @@ def draw_match(result_title, img1, img2, kp_pairs, status=None, H=None):
     cv.imshow(result_title, vis)
 
     return vis
-
-
-def main():
-    import sys, getopt
-    opts, args = getopt.getopt(sys.argv[1:], '', ['feature='])
-    opts = dict(opts)
-    feature_name = opts.get('--feature', 'sift')
-
-    try:
-        fn1, fn2 = args
-    except TypeError:
-        fn1 = 'box.png'
-        fn2 = 'box_in_scene.png'
-
-    img1 = cv.imread("/Users/langzhou/Downloads/input_0.png", cv.IMREAD_GRAYSCALE)
-    img2 = cv.imread("/Users/langzhou/Downloads/input_1.png", cv.IMREAD_GRAYSCALE)
-    detector, matcher = init_feature(feature_name)
-
-    if img1 is None:
-        print('Failed to load fn1:', fn1)
-        sys.exit(1)
-
-    if img2 is None:
-        print('Failed to load fn2:', fn2)
-        sys.exit(1)
-
-    if detector is None:
-        print('Unknown feature:', feature_name)
-        sys.exit(1)
-
-    print('Using', feature_name)
-
-    kp1, desc1 = detector.detectAndCompute(img1, None)
-    kp2, desc2 = detector.detectAndCompute(img2, None)
-    print('img1 - %d features, img2 - %d features' % (len(kp1), len(kp2)))
-
-    with Timer("Matching..."):
-        raw_matches = matcher.knnMatch(desc1, trainDescriptors=desc2, k=2)  # 2
-
-    p1, p2, kp_pairs = filter_matches(kp1, kp2, raw_matches)
-    if len(p1) >= 4:
-        H, status = cv.findHomography(p1, p2, cv.RANSAC, 5.0)
-        print(f"{np.sum(status)} / {len(status)}  inliers/matched")
-    else:
-        H, status = None, None
-        print(f"{len(p1)} matches found, not enough for homography estimation")
-
-    draw_match("Result", img1, img2, kp_pairs, status, H)
-
-    cv.waitKey()
-
-    print('Done')
-
-
-if __name__ == '__main__':
-    print(__doc__)
-    main()
-    cv.destroyAllWindows()

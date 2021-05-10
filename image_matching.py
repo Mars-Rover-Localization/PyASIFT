@@ -13,7 +13,6 @@ GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
 import numpy as np
 import cv2 as cv
 
-from utilities import Timer
 
 FLANN_INDEX_KDTREE = 1  # bug: flann enums are missing
 FLANN_INDEX_LSH = 6

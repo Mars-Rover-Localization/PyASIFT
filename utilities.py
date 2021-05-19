@@ -26,8 +26,8 @@ def Timer(msg):
         print("%.4f ms" % ((clock() - start) * 1000))
 
 
-def log_keypoints(kp_pairs, path: str = '/Users/langzhou/Downloads/keypoints.txt'):
-    with open(path, 'w+') as log:
+def log_keypoints(kp_pairs, path: str = 'sample/keypoints.txt'):
+    with open(path, 'w') as log:
         for kp1, kp2 in kp_pairs:
             log.write(f"{np.int32(kp1.pt)}      {np.int32(kp2.pt)}\n")
     log.close()

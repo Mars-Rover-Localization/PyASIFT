@@ -124,7 +124,7 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
 
     :param image1: Path for first image
     :param image2: Path for second image
-    :param detector_name: (sift|surf|orb|brisk)[-flann] Detector type to use, default as SIFT. Add '-flann' to use FLANN matching.
+    :param detector_name: (sift|surf|orb|akaze|brisk)[-flann] Detector type to use, default as SIFT. Add '-flann' to use FLANN matching.
     :return: None (Will return coordinate pairs in future)
     """
     # It seems that FLANN has performance issues, may be replaced by CUDA in future
@@ -183,13 +183,12 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
     draw_match("ASIFT Match Result", img1, img2, kp_pairs, None, H)     # Visualize result
     cv.waitKey()
 
-    log_keypoints(kp_pairs, "/Users/langzhou/Desktop/beach_keypoints.txt")     # Save keypoint pairs for further inspection
+    log_keypoints(kp_pairs, "sample/keypoints.txt")     # Save keypoint pairs for further inspection
 
     print('Done')
 
 
 if __name__ == '__main__':
     print(__doc__)
-    asift_main("/Users/langzhou/Desktop/beach1.jpg", "/Users/langzhou/Desktop/beach2.jpg")
+    asift_main("sample/adam1.png", "sample/adam2.png")
     cv.destroyAllWindows()
-

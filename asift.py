@@ -31,6 +31,9 @@ from utilities import Timer, log_keypoints, image_resize
 from image_matching import init_feature, filter_matches, draw_match
 
 
+MAX_SIZE = 1500
+
+
 def affine_skew(tilt, phi, img, mask=None):
     """
     affine_skew(tilt, phi, img, mask=None) -> skew_img, skew_mask, Ai
@@ -146,11 +149,14 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
         print(f"Unknown detector: {detector_name}")
         sys.exit(1)
 
-    if img1.shape[0] > 2000 or img1.shape[1] > 2000 or img2.shape[0] > 2000 or img2.shape[1] > 2000:
-        ratio_1 = 2000 / img1.shape[1]
-        ratio_2 = 2000 / img2.shape[1]
-        print("Large input detected, image will be resized")
+    if img1.shape[0] > 1000 or img1.shape[1] > 1000:
+        ratio_1 = 1000 / img1.shape[1]
+        print("Large input detected, image 1 will be resized")
         img1 = image_resize(img1, ratio_1)
+
+    if img2.shape[0] > 1000 or img2.shape[1] > 1000:
+        ratio_2 = 1000 / img2.shape[1]
+        print("Large input detected, image 2 will be resized")
         img2 = image_resize(img2, ratio_2)
 
     print(f"Using {detector_name.upper()} detector...")

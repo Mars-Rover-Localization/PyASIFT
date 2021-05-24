@@ -196,5 +196,5 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
 
 if __name__ == '__main__':
     print(__doc__)
-    asift_main("sample/adam1.png", "sample/adam2.png")
+    asift_main("sample/left_cam.png", "sample/DJI_0084.JPG")
     cv.destroyAllWindows()

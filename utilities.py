@@ -38,3 +38,12 @@ def log_keypoints(kp_pairs, path: str = 'sample/keypoints.txt'):
 def image_resize(src, ratio: float):
     dim = (int(src.shape[-1] * ratio), int(src.shape[0] * ratio))
     return cv.resize(src, dim, interpolation=cv.INTER_AREA)
+
+
+def image_split(src):
+    w = src.shape[1]
+    half = int(w / 2)
+    left_img = src[:, half:]
+    right_img = src[:, :half]
+    print(left_img.shape, right_img.shape)
+    return left_img, right_img

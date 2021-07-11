@@ -29,9 +29,7 @@ import numpy as np
 # Local modules
 from utilities import Timer, log_keypoints, image_resize
 from image_matching import init_feature, filter_matches, draw_match
-
-
-MAX_SIZE = 1500
+from config import MAX_SIZE
 
 
 def affine_skew(tilt, phi, img, mask=None):
@@ -133,14 +131,14 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
     # It seems that FLANN has performance issues, may be replaced by CUDA in future
 
     # Read images
-    img1 = cv.imread(image1, cv.IMREAD_GRAYSCALE)
-    img2 = cv.imread(image2, cv.IMREAD_GRAYSCALE)
+    ori_img1 = cv.imread(image1, cv.IMREAD_GRAYSCALE)
+    ori_img2 = cv.imread(image2, cv.IMREAD_GRAYSCALE)
 
     # Initialize feature detector and keypoint matcher
     detector, matcher = init_feature(detector_name)
 
     # Exit when reading empty image
-    if img1 is None or img2 is None:
+    if ori_img1 is None or ori_img2 is None:
         print("Failed to load images")
         sys.exit(1)
 
@@ -149,15 +147,22 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
         print(f"Unknown detector: {detector_name}")
         sys.exit(1)
 
-    if img1.shape[0] > 1000 or img1.shape[1] > 1000:
-        ratio_1 = 1000 / img1.shape[1]
-        print("Large input detected, image 1 will be resized")
-        img1 = image_resize(img1, ratio_1)
+    ratio_1 = 1
+    ratio_2 = 1
 
-    if img2.shape[0] > 1000 or img2.shape[1] > 1000:
-        ratio_2 = 1000 / img2.shape[1]
+    if ori_img1.shape[0] > MAX_SIZE or ori_img1.shape[1] > MAX_SIZE:
+        ratio_1 = MAX_SIZE / ori_img1.shape[1]
+        print("Large input detected, image 1 will be resized")
+        img1 = image_resize(ori_img1, ratio_1)
+    else:
+        img1 = ori_img1
+
+    if ori_img2.shape[0] > MAX_SIZE or ori_img2.shape[1] > MAX_SIZE:
+        ratio_2 = MAX_SIZE / ori_img2.shape[1]
         print("Large input detected, image 2 will be resized")
-        img2 = image_resize(img2, ratio_2)
+        img2 = image_resize(ori_img2, ratio_2)
+    else:
+        img2 = ori_img2
 
     print(f"Using {detector_name.upper()} detector...")
 
@@ -176,6 +181,25 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
     p1, p2, kp_pairs = filter_matches(kp1, kp2, raw_matches)
 
     if len(p1) >= 4:
+        # TODO: The effect of resizing on homography matrix needs to be investigated.
+        # TODO: Investigate function consistency when image aren't resized.
+        for index in range(len(p1)):
+            pt = p1[index]
+            p1[index] = pt / ratio_1
+
+        for index in range(len(p2)):
+            pt = p2[index]
+            p2[index] = pt / ratio_2
+
+        for index in range(len(kp_pairs)):
+            element = kp_pairs[index]
+            kp1, kp2 = element
+
+            new_kp1 = cv.KeyPoint(kp1.pt[0] / ratio_1, kp1.pt[1] / ratio_1, kp1.size)
+            new_kp2 = cv.KeyPoint(kp2.pt[0] / ratio_2, kp2.pt[1] / ratio_2, kp2.size)
+
+            kp_pairs[index] = (new_kp1, new_kp2)
+
         H, status = cv.findHomography(p1, p2, cv.RANSAC, 5.0)
         print(f"{np.sum(status)} / {len(status)}  inliers/matched")
         # do not draw outliers (there will be a lot of them)
@@ -186,7 +210,7 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
 
     # kp_pairs: list[(cv2.KeyPoint, cv2.KeyPoint)]
 
-    draw_match("ASIFT Match Result", img1, img2, kp_pairs, None, H)     # Visualize result
+    draw_match("ASIFT Match Result", ori_img1, ori_img2, kp_pairs, None, H)     # Visualize result
     cv.waitKey()
 
     log_keypoints(kp_pairs, "sample/keypoints.txt")     # Save keypoint pairs for further inspection
@@ -196,5 +220,5 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
 
 if __name__ == '__main__':
     print(__doc__)
-    asift_main("sample/left_cam.png", "sample/DJI_0084.JPG")
+    asift_main("sample/1-1.png", "sample/DJI_0298.JPG")
     cv.destroyAllWindows()

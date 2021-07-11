@@ -89,6 +89,7 @@ def draw_match(result_title, img1, img2, kp_pairs, status=None, H=None):
     if status is None:
         status = np.ones(len(kp_pairs), np.bool_)
     p1, p2 = [], []  # python 2 / python 3 change of zip unpacking
+
     for kpp in kp_pairs:
         p1.append(np.int32(kpp[0].pt))
         p2.append(np.int32(np.array(kpp[1].pt) + [w1, 0]))

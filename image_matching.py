@@ -14,8 +14,7 @@ import numpy as np
 import cv2 as cv
 
 
-FLANN_INDEX_KDTREE = 1  # bug: flann enums are missing
-FLANN_INDEX_LSH = 6
+from config import FLANN_INDEX_KDTREE, FLANN_INDEX_LSH
 
 
 def init_feature(name):

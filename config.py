@@ -14,3 +14,7 @@ From our testing, it's recommended that MAX_SIZE be set to 1500-2000.
 If PyASIFT throws an error while executing, reduce the MAX_SIZE value may help. 
 """
 MAX_SIZE = 1000
+
+FLANN_INDEX_KDTREE = 1
+
+FLANN_INDEX_LSH = 6

@@ -11,7 +11,7 @@ GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
 """
 
 import numpy as np
-import cv2 as cv
+import cv2
 
 
 from config import FLANN_INDEX_KDTREE, FLANN_INDEX_LSH
@@ -21,25 +21,25 @@ def init_feature(name):
     chunks = name.split('-')
 
     if chunks[0] == 'sift':
-        detector = cv.SIFT_create()
-        norm = cv.NORM_L2
+        detector = cv2.SIFT_create()
+        norm = cv2.NORM_L2
     elif chunks[0] == 'surf':
-        detector = cv.xfeatures2d.SURF_create(800)
-        norm = cv.NORM_L2
+        detector = cv2.xfeatures2d.SURF_create(800)
+        norm = cv2.NORM_L2
     elif chunks[0] == 'orb':
-        detector = cv.ORB_create(400)
-        norm = cv.NORM_HAMMING
+        detector = cv2.ORB_create(400)
+        norm = cv2.NORM_HAMMING
     elif chunks[0] == 'akaze':
-        detector = cv.AKAZE_create()
-        norm = cv.NORM_HAMMING
+        detector = cv2.AKAZE_create()
+        norm = cv2.NORM_HAMMING
     elif chunks[0] == 'brisk':
-        detector = cv.BRISK_create()
-        norm = cv.NORM_HAMMING
+        detector = cv2.BRISK_create()
+        norm = cv2.NORM_HAMMING
     else:
         return None, None   # Return None if unknown detector name
 
     if 'flann' in chunks:
-        if norm == cv.NORM_L2:
+        if norm == cv2.NORM_L2:
             flann_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
         else:
             flann_params = dict(algorithm=FLANN_INDEX_LSH,
@@ -47,9 +47,9 @@ def init_feature(name):
                                 key_size=12,  # 20
                                 multi_probe_level=1)  # 2
 
-        matcher = cv.FlannBasedMatcher(flann_params)
+        matcher = cv2.FlannBasedMatcher(flann_params)
     else:
-        matcher = cv.BFMatcher(norm)
+        matcher = cv2.BFMatcher(norm)
 
     return detector, matcher
 
@@ -78,12 +78,12 @@ def draw_match(result_title, img1, img2, kp_pairs, status=None, H=None):
     vis = np.zeros((max(h1, h2), w1 + w2), np.uint8)
     vis[:h1, :w1] = img1
     vis[:h2, w1:w1 + w2] = img2
-    vis = cv.cvtColor(vis, cv.COLOR_GRAY2BGR)
+    vis = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
 
     if H is not None:
         corners = np.float32([[0, 0], [w1, 0], [w1, h1], [0, h1]])
-        corners = np.int32(cv.perspectiveTransform(corners.reshape(1, -1, 2), H).reshape(-1, 2) + (w1, 0))
-        cv.polylines(vis, [corners], True, (255, 255, 255))
+        corners = np.int32(cv2.perspectiveTransform(corners.reshape(1, -1, 2), H).reshape(-1, 2) + (w1, 0))
+        cv2.polylines(vis, [corners], True, (255, 255, 255))
 
     if status is None:
         status = np.ones(len(kp_pairs), np.bool_)
@@ -99,21 +99,21 @@ def draw_match(result_title, img1, img2, kp_pairs, status=None, H=None):
     for (x1, y1), (x2, y2), inlier in zip(p1, p2, status):
         if inlier:
             color = green
-            cv.circle(vis, (x1, y1), 2, color, -1)
-            cv.circle(vis, (x2, y2), 2, color, -1)
+            cv2.circle(vis, (x1, y1), 2, color, -1)
+            cv2.circle(vis, (x2, y2), 2, color, -1)
         else:
             color = red
             r = 2
             thickness = 3
-            cv.line(vis, (x1 - r, y1 - r), (x1 + r, y1 + r), color, thickness)
-            cv.line(vis, (x1 - r, y1 + r), (x1 + r, y1 - r), color, thickness)
-            cv.line(vis, (x2 - r, y2 - r), (x2 + r, y2 + r), color, thickness)
-            cv.line(vis, (x2 - r, y2 + r), (x2 + r, y2 - r), color, thickness)
+            cv2.line(vis, (x1 - r, y1 - r), (x1 + r, y1 + r), color, thickness)
+            cv2.line(vis, (x1 - r, y1 + r), (x1 + r, y1 - r), color, thickness)
+            cv2.line(vis, (x2 - r, y2 - r), (x2 + r, y2 + r), color, thickness)
+            cv2.line(vis, (x2 - r, y2 + r), (x2 + r, y2 - r), color, thickness)
 
     for (x1, y1), (x2, y2), inlier in zip(p1, p2, status):
         if inlier:
-            cv.line(vis, (x1, y1), (x2, y2), green)
+            cv2.line(vis, (x1, y1), (x2, y2), green)
 
-    cv.imshow(result_title, vis)
+    cv2.imshow(result_title, vis)
 
     return vis

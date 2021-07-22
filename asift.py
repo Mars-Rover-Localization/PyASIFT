@@ -23,7 +23,7 @@ from multiprocessing.pool import ThreadPool     # Use multiprocessing to avoid G
 import sys
 
 # Third party modules, opencv-contrib-python is needed
-import cv2 as cv
+import cv2
 import numpy as np
 
 # Local modules
@@ -55,22 +55,22 @@ def affine_skew(tilt, phi, img, mask=None):
         A = np.float32([[c, -s], [s, c]])
         corners = [[0, 0], [w, 0], [w, h], [0, h]]
         tcorners = np.int32(np.dot(corners, A.T))
-        x, y, w, h = cv.boundingRect(tcorners.reshape(1, -1, 2))
+        x, y, w, h = cv2.boundingRect(tcorners.reshape(1, -1, 2))
         A = np.hstack([A, [[-x], [-y]]])
-        img = cv.warpAffine(img, A, (w, h), flags=cv.INTER_LINEAR, borderMode=cv.BORDER_REPLICATE)
+        img = cv2.warpAffine(img, A, (w, h), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
 
     # Tilt image (resizing after rotation)
     if tilt != 1.0:
         s = 0.8 * np.sqrt(tilt * tilt - 1)
-        img = cv.GaussianBlur(img, (0, 0), sigmaX=s, sigmaY=0.01)
-        img = cv.resize(img, (0, 0), fx=1.0 / tilt, fy=1.0, interpolation=cv.INTER_NEAREST)
+        img = cv2.GaussianBlur(img, (0, 0), sigmaX=s, sigmaY=0.01)
+        img = cv2.resize(img, (0, 0), fx=1.0 / tilt, fy=1.0, interpolation=cv2.INTER_NEAREST)
         A[0] /= tilt
 
     if phi != 0.0 or tilt != 1.0:
         h, w = img.shape[:2]
-        mask = cv.warpAffine(mask, A, (w, h), flags=cv.INTER_NEAREST)
+        mask = cv2.warpAffine(mask, A, (w, h), flags=cv2.INTER_NEAREST)
 
-    Ai = cv.invertAffineTransform(A)
+    Ai = cv2.invertAffineTransform(A)
 
     return img, mask, Ai
 
@@ -131,8 +131,8 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
     # It seems that FLANN has performance issues, may be replaced by CUDA in future
 
     # Read images
-    ori_img1 = cv.imread(image1, cv.IMREAD_GRAYSCALE)
-    ori_img2 = cv.imread(image2, cv.IMREAD_GRAYSCALE)
+    ori_img1 = cv2.imread(image1, cv2.IMREAD_GRAYSCALE)
+    ori_img2 = cv2.imread(image2, cv2.IMREAD_GRAYSCALE)
 
     # Initialize feature detector and keypoint matcher
     detector, matcher = init_feature(detector_name)
@@ -168,7 +168,7 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
 
     # Profile time consumption of keypoints extraction
     with Timer(f"Extracting {detector_name.upper()} keypoints..."):
-        pool = ThreadPool(processes=cv.getNumberOfCPUs())
+        pool = ThreadPool(processes=cv2.getNumberOfCPUs())
         kp1, desc1 = affine_detect(detector, img1, pool=pool)
         kp2, desc2 = affine_detect(detector, img2, pool=pool)
 
@@ -195,12 +195,12 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
             element = kp_pairs[index]
             kp1, kp2 = element
 
-            new_kp1 = cv.KeyPoint(kp1.pt[0] / ratio_1, kp1.pt[1] / ratio_1, kp1.size)
-            new_kp2 = cv.KeyPoint(kp2.pt[0] / ratio_2, kp2.pt[1] / ratio_2, kp2.size)
+            new_kp1 = cv2.KeyPoint(kp1.pt[0] / ratio_1, kp1.pt[1] / ratio_1, kp1.size)
+            new_kp2 = cv2.KeyPoint(kp2.pt[0] / ratio_2, kp2.pt[1] / ratio_2, kp2.size)
 
             kp_pairs[index] = (new_kp1, new_kp2)
 
-        H, status = cv.findHomography(p1, p2, cv.RANSAC, 5.0)
+        H, status = cv2.findHomography(p1, p2, cv2.RANSAC, 5.0)
         print(f"{np.sum(status)} / {len(status)}  inliers/matched")
         # do not draw outliers (there will be a lot of them)
         kp_pairs = [kpp for kpp, flag in zip(kp_pairs, status) if flag]
@@ -211,7 +211,7 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
     # kp_pairs: list[(cv2.KeyPoint, cv2.KeyPoint)]
 
     draw_match("ASIFT Match Result", ori_img1, ori_img2, kp_pairs, None, H)     # Visualize result
-    cv.waitKey()
+    cv2.waitKey()
 
     log_keypoints(kp_pairs, "sample/keypoints.txt")     # Save keypoint pairs for further inspection
 
@@ -220,5 +220,5 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
 
 if __name__ == '__main__':
     print(__doc__)
-    asift_main("sample/1-1.png", "sample/DJI_0298.JPG")
-    cv.destroyAllWindows()
+    asift_main("sample/right_cam.png", "sample/DJI_0315.JPG")
+    cv2.destroyAllWindows()

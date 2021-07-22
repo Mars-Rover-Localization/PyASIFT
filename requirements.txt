@@ -3,7 +3,7 @@
 # PyASIFT/asift.py: 27
 # PyASIFT/image_matching.py: 15
 # PyASIFT/utilities.py: 11
-numpy ~= 1.19.4
+numpy~=1.20.3
 
 # PyASIFT/asift.py: 26
 # PyASIFT/image_matching.py: 16

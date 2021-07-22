@@ -9,11 +9,11 @@ from contextlib import contextmanager
 
 # Third party modules
 import numpy as np
-import cv2 as cv
+import cv2
 
 
 def clock():
-    return cv.getTickCount() / cv.getTickFrequency()
+    return cv2.getTickCount() / cv2.getTickFrequency()
 
 
 @contextmanager
@@ -37,7 +37,7 @@ def log_keypoints(kp_pairs, path: str = 'sample/keypoints.txt'):
 
 def image_resize(src, ratio: float):
     dim = (int(src.shape[-1] * ratio), int(src.shape[0] * ratio))
-    return cv.resize(src, dim, interpolation=cv.INTER_AREA)
+    return cv2.resize(src, dim, interpolation=cv2.INTER_AREA)
 
 
 def image_split(src):

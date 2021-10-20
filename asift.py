@@ -1,5 +1,5 @@
 """
-Affine invariant feature-based image matching sample.
+Affine invariant feature-based image matching.
 
 Based on Affine-SIFT algorithm[1].
 
@@ -13,7 +13,7 @@ GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
 
 Created April 2021
 
-Last modified May 2021
+Last modified October 2021
 
 [1] http://www.ipol.im/pub/algo/my_affine_sift/
 """
@@ -220,5 +220,5 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift"):
 
 if __name__ == '__main__':
     print(__doc__)
-    asift_main("sample/right_cam.png", "sample/DJI_0315.JPG")
+    asift_main("sample/IMG_0011.jpeg", "sample/IMG_0011_r.jpeg")
     cv2.destroyAllWindows()

@@ -45,5 +45,5 @@ def image_split(src):
     half = int(w / 2)
     left_img = src[:, half:]
     right_img = src[:, :half]
-    print(left_img.shape, right_img.shape)
+
     return left_img, right_img

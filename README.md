@@ -17,8 +17,8 @@ ASIFT Python implementation with CUDA support.
 
 ### Operating System Environment:
 * macOS 11.4 Big Sur
-* macOS 12.0 Monterey
-* Windows 10 Pro version 21H2
+* macOS 12.2 Monterey
+* Windows 11 Pro version 21H2
 
 ***All OS are installed with Python 3.9, please notice that we haven't done test on other OS platforms.***
 
@@ -33,7 +33,9 @@ The current code reads two images from `sample` folder and save keypoints data i
 Command-line argument support maybe added in near future.
 
 ### About GPU Acceleration
-The team is currently working out ways to accelerate the program effectively. We would release a CUDA enabled version in later 2021.
+The team is currently working out ways to accelerate the program effectively. We may release a CUDA enabled version in early 2022.
+
+**Please notice that** the time bottleneck in image matching is descriptor matching (which GPU acceleration may yield limited performance improvement) , rather than feature extraction. Hence, GPU acceleration won't be the team's primary focus.
 
 ### References
 Original ASIFT algorithm was put forward by JM Morel, please refer to:

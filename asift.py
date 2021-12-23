@@ -23,7 +23,7 @@ from multiprocessing.pool import ThreadPool     # Use multiprocessing to avoid G
 import sys
 
 # Third party modules, opencv-contrib-python is needed
-import cv2
+from cv2 import cv2
 import numpy as np
 
 # Local modules
@@ -119,7 +119,7 @@ def affine_detect(detector, img, pool=None):
     return keypoints, np.array(descrs)
 
 
-def asift_main(image1: str, image2: str, detector_name: str = "sift"):
+def asift_main(image1: str, image2: str, detector_name: str = "sift-flann"):
     """
     Main function of ASIFT Python implementation.
 

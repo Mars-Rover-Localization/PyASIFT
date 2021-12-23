@@ -9,7 +9,7 @@ from contextlib import contextmanager
 
 # Third party modules
 import numpy as np
-import cv2
+from cv2 import cv2
 
 
 def clock():

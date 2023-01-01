@@ -5,7 +5,7 @@
 ![Stars](https://img.shields.io/github/stars/Mars-Rover-Localization/PyASIFT?style=for-the-badge)
 ![License](https://img.shields.io/github/license/Mars-Rover-Localization/PyASIFT?style=for-the-badge)
 
-ASIFT Python implementation with CUDA support.
+ASIFT Python implementation.
 
 ***This repo is still in active development***.
 
@@ -13,25 +13,30 @@ ASIFT Python implementation with CUDA support.
 * [opencv_contrib_python](https://pypi.org/project/opencv-contrib-python/)
 * [numpy](https://numpy.org)
 
+### Usage
+* CLI: `python asift.py --img1 [PATH_TO_FIRST_IMAGE] --img2 [PATH_TO_SECOND_IMAGE] --detector [DETECTOR_NAME]`
+* Invoke the `asift_main()` method from `asift.py`
+
+Example - Using SIFT detector with FLANN algorithm to match two sample images:
+```
+python asift.py --img1 sample/adam1.png --img2 sample/adam2.png --detector 'sift-flann'
+```
+Please refer to inline docs for more info.
+
 ### Operating System Environment:
 * macOS 11.4 Big Sur
 * macOS 12.2 Monterey
-* Windows 11 Pro version 21H2
+* Windows 11 Pro version 22H2
 
-***All OS are installed with Python 3.9, please notice that we haven't done test on other OS platforms.***
+***Tested with Python 3.7, 3.9 and 3.10.***
 
 ### Hardware Requirements:
 While the program should run on most modern platforms, considering the time complexity of ASIFT algorithm, we recommend using a 6 core or better CPU for better image matching speed.
 
 Requirements regarding GPU will be added when we complete development of relating modules.
 
-### Usage
-The current code reads two images from `sample` folder and save keypoints data in plain text format in the same directory, also display an image visualizing matching result.
-
-Command-line argument support maybe added in near future.
-
 ### About GPU Acceleration
-The team is currently working out ways to accelerate the program effectively. We may release a CUDA enabled version in early 2022.
+The team is currently working out ways to accelerate the program effectively. We may release a CUDA enabled version in the future.
 
 **Please notice that** the time bottleneck in image matching is descriptor matching (which GPU acceleration may yield limited performance improvement) , rather than feature extraction. Hence, GPU acceleration won't be the team's primary focus.
 

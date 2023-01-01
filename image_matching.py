@@ -11,7 +11,7 @@ GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
 """
 
 import numpy as np
-from cv2 import cv2
+import cv2
 
 
 from config import FLANN_INDEX_KDTREE, FLANN_INDEX_LSH
@@ -24,7 +24,7 @@ def init_feature(name):
         detector = cv2.SIFT_create()
         norm = cv2.NORM_L2
     elif chunks[0] == 'surf':
-        detector = cv2.xfeatures2d.SURF_create(800)
+        detector = cv2.xfeatures2d.SURF_create(800)     # SURF is a patented algorithm and may not work in some OpenCV builds
         norm = cv2.NORM_L2
     elif chunks[0] == 'orb':
         detector = cv2.ORB_create(400)

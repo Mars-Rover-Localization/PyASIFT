@@ -1,19 +1,12 @@
 """
-Affine invariant feature-based image matching.
-
-Based on Affine-SIFT algorithm[1].
-
+Affine invariant feature-based image matching based on Affine-SIFT algorithm[1].
 The original implementation is based on SIFT, support for other common detectors is also added for testing use. Homography RANSAC is used to reject outliers.
-
 Threading is used for faster affine sampling. Multicore CPUs with Hyper-threading is strongly recommended for better performance.
 
 Copyleft Lang Zhou, zhoulang731@tongji.edu.cn
-
 GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
 
-Created April 2021
-
-Last modified October 2021
+Created April 2021, last modified January 2023
 
 [1] http://www.ipol.im/pub/algo/my_affine_sift/
 """
@@ -21,9 +14,10 @@ Last modified October 2021
 # Built-in modules
 from multiprocessing.pool import ThreadPool     # Use multiprocessing to avoid GIL
 import sys
+import argparse
 
 # Third party modules, opencv-contrib-python is needed
-from cv2 import cv2
+import cv2
 import numpy as np
 
 # Local modules
@@ -219,6 +213,15 @@ def asift_main(image1: str, image2: str, detector_name: str = "sift-flann"):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--img1', type=str, required=True)
+    parser.add_argument('--img2', type=str, required=True)
+    parser.add_argument('--detector', type=str, default='sift-flann', help="(sift|surf|orb|akaze|brisk)[-flann] Detector type to use, default as SIFT. Add '-flann' to use FLANN matching.")
+
+    args = parser.parse_args()
+
     print(__doc__)
-    asift_main("sample/IMG_0011.jpeg", "sample/IMG_0011_r.jpeg")
+
+    asift_main(args.img1, args.img2, args.detector)
     cv2.destroyAllWindows()

@@ -1,8 +1,6 @@
 """
-This module contains configuration data for ASIFT matching.
-For usage of each variable, please refer to in-line notations.
+This script contains configuration data for ASIFT matching.
 """
-
 
 """
 Currently PyASIFT cannot process large size image correctly.
@@ -15,6 +13,7 @@ If PyASIFT throws an error while executing, reduce the MAX_SIZE value may help.
 """
 MAX_SIZE = 1000
 
+# Parameters for matching keypoints using FLANN algorithm
 FLANN_INDEX_KDTREE = 1
 
 FLANN_INDEX_LSH = 6

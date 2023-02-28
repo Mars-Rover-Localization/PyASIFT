@@ -13,7 +13,6 @@ GitHub: https://github.com/Mars-Rover-Localization/PyASIFT
 import numpy as np
 import cv2
 
-
 from config import FLANN_INDEX_KDTREE, FLANN_INDEX_LSH
 
 

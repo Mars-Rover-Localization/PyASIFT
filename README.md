@@ -45,6 +45,16 @@ Original ASIFT algorithm was put forward by JM Morel, please refer to:
 
 [Morel, Jean-Michel, and Guoshen Yu. "ASIFT: A new framework for fully affine invariant image comparison." SIAM journal on imaging sciences 2.2 (2009): 438-469.](https://epubs.siam.org/doi/abs/10.1137/080732730)
 
-Currently, the project also use code from the Python OpenCV sample of ASIFT, please refer to:
+The project also use code from the Python OpenCV sample of ASIFT, please refer to:
 
 https://github.com/opencv/opencv/blob/master/samples/python/asift.py
+
+Should you use code from this repo for research purposes, please use the following citation:
+```
+@article{zhou2022mars,
+  title={Mars Rover Localization Based on A2G Obstacle Distribution Pattern Matching},
+  author={Zhou, Lang and Zhang, Zhitai and Wang, Hongliang},
+  journal={arXiv preprint arXiv:2210.03398},
+  year={2022}
+}
+```

@@ -5,9 +5,9 @@
 ![Stars](https://img.shields.io/github/stars/Mars-Rover-Localization/PyASIFT?style=for-the-badge)
 ![License](https://img.shields.io/github/license/Mars-Rover-Localization/PyASIFT?style=for-the-badge)
 
-ASIFT Python implementation.
+Affine-SIFT algorithm Python implementation.
 
-***This repo is still in active development***.
+***This repo is no longer in active development***.
 
 ### Dependencies:
 * [opencv_contrib_python](https://pypi.org/project/opencv-contrib-python/)
